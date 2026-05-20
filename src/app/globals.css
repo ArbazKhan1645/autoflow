@@ -1,26 +1,219 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7fbff;
+  --foreground: #0d172a;
+  --surface: #ffffff;
+  --surface-muted: #edf6ff;
+  --border-soft: rgba(15, 23, 42, 0.1);
+  --primary: #1769e0;
+  --primary-foreground: #ffffff;
+  --accent: #00a8cc;
+  --success: #0f9f6e;
+  --warning: #d97706;
+  --danger: #dc2626;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border-soft: var(--border-soft);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #07111f;
+  --foreground: #eef6ff;
+  --surface: #0e1b2f;
+  --surface-muted: #101f35;
+  --border-soft: rgba(226, 232, 240, 0.14);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: rgba(23, 105, 224, 0.18);
+  color: #0d172a;
+}
+
+.glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.86),
+    rgba(236, 247, 255, 0.64)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow: 0 18px 70px rgba(10, 57, 120, 0.12);
+  backdrop-filter: blur(20px);
+}
+
+.dark .glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(14, 27, 47, 0.86),
+    rgba(16, 31, 53, 0.64)
+  );
+  border-color: rgba(226, 232, 240, 0.12);
+}
+
+.premium-grid {
+  background-image:
+    linear-gradient(rgba(23, 105, 224, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 105, 224, 0.08) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.crm-admin-theme {
+  --background: #f6faff;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-muted: #eff6ff;
+  --border-soft: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+}
+
+.dark .crm-admin-theme .dark\:text-white,
+.dark .crm-admin-theme .dark\:text-slate-200,
+.dark .crm-admin-theme .dark\:text-slate-300,
+.dark .crm-admin-theme .dark\:text-slate-400 {
+  color: #0f172a !important;
+}
+
+.crm-admin-theme main .dark\:text-white,
+.crm-admin-theme main .dark\:text-slate-200,
+.crm-admin-theme main .dark\:text-slate-300,
+.crm-admin-theme main .dark\:text-slate-400 {
+  color: #0f172a !important;
+}
+
+.crm-admin-theme main h1,
+.crm-admin-theme main h2,
+.crm-admin-theme main h3,
+.crm-admin-theme main h4 {
+  color: #0f172a;
+}
+
+.crm-admin-theme main p {
+  color: inherit;
+}
+
+.crm-admin-theme main .bg-primary,
+.crm-admin-theme main .bg-blue-600,
+.crm-admin-theme main .bg-blue-700,
+.crm-admin-theme main .bg-slate-950,
+.crm-admin-theme main .bg-slate-900,
+.crm-admin-theme main .bg-red-600,
+.crm-admin-theme main .bg-emerald-600 {
+  color: #ffffff;
+}
+
+.crm-admin-theme main .bg-primary h1,
+.crm-admin-theme main .bg-primary h2,
+.crm-admin-theme main .bg-primary h3,
+.crm-admin-theme main .bg-primary h4,
+.crm-admin-theme main .bg-blue-600 h1,
+.crm-admin-theme main .bg-blue-600 h2,
+.crm-admin-theme main .bg-blue-600 h3,
+.crm-admin-theme main .bg-blue-600 h4,
+.crm-admin-theme main .bg-blue-700 h1,
+.crm-admin-theme main .bg-blue-700 h2,
+.crm-admin-theme main .bg-blue-700 h3,
+.crm-admin-theme main .bg-blue-700 h4,
+.crm-admin-theme main .bg-slate-950 h1,
+.crm-admin-theme main .bg-slate-950 h2,
+.crm-admin-theme main .bg-slate-950 h3,
+.crm-admin-theme main .bg-slate-950 h4,
+.crm-admin-theme main .bg-slate-900 h1,
+.crm-admin-theme main .bg-slate-900 h2,
+.crm-admin-theme main .bg-slate-900 h3,
+.crm-admin-theme main .bg-slate-900 h4 {
+  color: #ffffff;
+}
+
+.crm-admin-theme main .bg-primary p,
+.crm-admin-theme main .bg-blue-600 p,
+.crm-admin-theme main .bg-blue-700 p,
+.crm-admin-theme main .bg-slate-950 p,
+.crm-admin-theme main .bg-slate-900 p {
+  color: #e2e8f0;
+}
+
+.crm-admin-theme main .bg-primary .dark\:text-white,
+.crm-admin-theme main .bg-primary .dark\:text-slate-200,
+.crm-admin-theme main .bg-primary .dark\:text-slate-300,
+.crm-admin-theme main .bg-blue-600 .dark\:text-white,
+.crm-admin-theme main .bg-blue-600 .dark\:text-slate-200,
+.crm-admin-theme main .bg-blue-600 .dark\:text-slate-300,
+.crm-admin-theme main .bg-blue-700 .dark\:text-white,
+.crm-admin-theme main .bg-blue-700 .dark\:text-slate-200,
+.crm-admin-theme main .bg-blue-700 .dark\:text-slate-300,
+.crm-admin-theme main .bg-slate-950 .dark\:text-white,
+.crm-admin-theme main .bg-slate-950 .dark\:text-slate-200,
+.crm-admin-theme main .bg-slate-950 .dark\:text-slate-300,
+.crm-admin-theme main .bg-slate-900 .dark\:text-white,
+.crm-admin-theme main .bg-slate-900 .dark\:text-slate-200,
+.crm-admin-theme main .bg-slate-900 .dark\:text-slate-300 {
+  color: #ffffff !important;
+}
+
+.crm-admin-theme main input,
+.crm-admin-theme main select,
+.crm-admin-theme main textarea {
+  background-color: #ffffff;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.crm-admin-theme main input::placeholder,
+.crm-admin-theme main textarea::placeholder {
+  color: #64748b;
+}
+
+.dark .crm-admin-theme .dark\:bg-white\/5,
+.dark .crm-admin-theme .dark\:bg-white\/10,
+.dark .crm-admin-theme .dark\:bg-surface {
+  background-color: #ffffff !important;
+}
+
+.crm-admin-theme main .dark\:bg-white\/5,
+.crm-admin-theme main .dark\:bg-white\/10,
+.crm-admin-theme main .dark\:bg-surface {
+  background-color: #ffffff !important;
+}
+
+.dark .crm-admin-theme .dark\:border-white\/10 {
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+.dark .crm-admin-theme .dark\:focus\:ring-blue-500\/20:focus,
+.dark .crm-admin-theme .dark\:focus\:ring-blue-500\/25:focus {
+  --tw-ring-color: rgba(23, 105, 224, 0.18) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }
