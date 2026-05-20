@@ -40,6 +40,12 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     roles: ["owner", "admin", "sales", "support"],
   },
   {
+    label: "Accounts",
+    href: "/crm/accounts",
+    icon: "UserCog",
+    roles: ["owner", "admin"],
+  },
+  {
     label: "Inventory",
     href: "/crm/inventory",
     icon: "Warehouse",

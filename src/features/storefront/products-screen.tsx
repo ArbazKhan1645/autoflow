@@ -37,7 +37,7 @@ function ProductCard({ product }: { product: StorefrontProduct }) {
 
   return (
     <Panel className="group overflow-hidden">
-      <Link href={`/products/${product.slug}`}>
+      <Link href={`/products/${product.slug}`} prefetch={false}>
         <div className="relative h-52 bg-slate-100">
           <Image
             alt={product.name}
@@ -55,7 +55,7 @@ function ProductCard({ product }: { product: StorefrontProduct }) {
         <p className="text-xs font-black uppercase tracking-[0.16em] text-primary">
           {product.category} / {product.childCategory}
         </p>
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.slug}`} prefetch={false}>
           <h2 className="mt-2 line-clamp-2 min-h-12 text-lg font-black text-slate-950 transition hover:text-primary">
             {product.name}
           </h2>

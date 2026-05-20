@@ -1,3 +1,4 @@
+import { AdminAuthGuard } from "@/components/auth/admin-auth-guard";
 import { AppShell } from "@/components/layout/app-shell";
 
 export default function PlatformLayout({
@@ -5,5 +6,9 @@ export default function PlatformLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <AppShell>{children}</AppShell>;
+  return (
+    <AdminAuthGuard>
+      <AppShell>{children}</AppShell>
+    </AdminAuthGuard>
+  );
 }

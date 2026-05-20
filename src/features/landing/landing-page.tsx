@@ -84,7 +84,7 @@ function HotProductCard({ product }: { product: StorefrontProduct }) {
 
   return (
     <Panel className="group overflow-hidden">
-      <Link href={`/products/${product.slug}`}>
+      <Link href={`/products/${product.slug}`} prefetch={false}>
         <div className="relative h-56 overflow-hidden bg-slate-100">
           <Image
             alt={product.name}
@@ -103,7 +103,7 @@ function HotProductCard({ product }: { product: StorefrontProduct }) {
         <p className="text-xs font-black uppercase tracking-[0.16em] text-primary">
           {product.subCategory} / {product.childCategory}
         </p>
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.slug}`} prefetch={false}>
           <h3 className="mt-2 line-clamp-2 min-h-12 text-lg font-black text-slate-950 transition hover:text-primary">
             {product.name}
           </h3>
@@ -183,6 +183,7 @@ export function LandingPage() {
                       "bg-white text-slate-950 shadow-white/20 hover:bg-blue-50",
                   })}
                   href="/products"
+                  prefetch={false}
                 >
                   Shop products
                   <ArrowRight className="h-5 w-5" />
@@ -195,6 +196,7 @@ export function LandingPage() {
                       "border-white/25 bg-white/10 text-white hover:bg-white/18",
                   })}
                   href="/contact"
+                  prefetch={false}
                 >
                   Ask fitment expert
                 </Link>
@@ -224,6 +226,7 @@ export function LandingPage() {
                       className="rounded-lg bg-white p-3 text-slate-950 shadow-xl transition hover:-translate-y-1"
                       href={`/products/${product.slug}`}
                       key={product.id}
+                      prefetch={false}
                     >
                       <div className="relative h-28 overflow-hidden rounded-md">
                         <Image
@@ -261,7 +264,7 @@ export function LandingPage() {
                   Categories built for real car owners
                 </h2>
               </div>
-              <Link className="font-black text-primary" href="/products">
+              <Link className="font-black text-primary" href="/products" prefetch={false}>
                 View all products
               </Link>
             </div>
@@ -283,6 +286,7 @@ export function LandingPage() {
                           className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 transition hover:bg-blue-50 hover:text-primary"
                           href={item.href}
                           key={`${category.label}-${item.label}`}
+                          prefetch={false}
                         >
                           {item.label}
                         </Link>
@@ -352,7 +356,7 @@ export function LandingPage() {
                   Fast-moving accessories customers keep buying
                 </h2>
               </div>
-              <Link className="font-black text-primary" href="/products?hot=true">
+              <Link className="font-black text-primary" href="/products?hot=true" prefetch={false}>
                 Browse hot sellers
               </Link>
             </div>
@@ -532,6 +536,7 @@ export function LandingPage() {
                   className: "bg-white text-slate-950 hover:bg-blue-50",
                 })}
                 href="/products"
+                prefetch={false}
               >
                 Start shopping
                 <ArrowRight className="h-5 w-5" />

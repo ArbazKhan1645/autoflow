@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  applicationName: "AutoFlow Parts",
   title: {
     default: "AutoFlow CRM | Auto Parts Inventory, Ordering and AI",
     template: "%s | AutoFlow CRM",
@@ -28,10 +29,28 @@ export const metadata: Metadata = {
     "parts catalog",
   ],
   metadataBase: new URL("https://autoflow.example.com"),
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    title: "AutoFlow Parts",
+    statusBarStyle: "default",
+  },
   openGraph: {
     title: "AutoFlow CRM",
     description:
       "Complete Auto Parts CRM, Inventory, Ordering and AI command center.",
+    images: [{ url: "/icon.png", width: 512, height: 512, alt: "AutoFlow" }],
     type: "website",
   },
 };
@@ -44,6 +63,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background text-foreground">

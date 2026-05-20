@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Car, Mail, MapPin, Phone, ShieldCheck, Truck } from "lucide-react";
+import { Mail, MapPin, Phone, ShieldCheck, Truck } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { megaMenu } from "@/data/storefront";
 
 export function PublicFooter() {
@@ -7,10 +8,8 @@ export function PublicFooter() {
     <footer className="border-t border-slate-200 bg-slate-950 text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.2fr_0.8fr_0.8fr_1fr] lg:px-8">
         <div>
-          <Link className="flex items-center gap-3" href="/">
-            <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary">
-              <Car className="h-5 w-5" />
-            </span>
+          <Link className="flex items-center gap-3" href="/" prefetch={false}>
+            <LogoMark className="h-11 w-11" />
             <span className="text-xl font-black">AutoFlow Parts</span>
           </Link>
           <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
@@ -32,7 +31,7 @@ export function PublicFooter() {
           <h3 className="font-black">Shop</h3>
           <div className="mt-4 grid gap-3 text-sm text-slate-300">
             {megaMenu.map((item) => (
-              <Link className="transition hover:text-white" href={item.href} key={item.label}>
+              <Link className="transition hover:text-white" href={item.href} key={item.label} prefetch={false}>
                 {item.label}
               </Link>
             ))}
@@ -48,7 +47,7 @@ export function PublicFooter() {
               ["Contact Us", "/contact"],
               ["My Account", "/account"],
             ].map(([label, href]) => (
-              <Link className="transition hover:text-white" href={href} key={href}>
+              <Link className="transition hover:text-white" href={href} key={href} prefetch={false}>
                 {label}
               </Link>
             ))}
@@ -59,15 +58,15 @@ export function PublicFooter() {
           <div className="mt-4 space-y-4 text-sm text-slate-300">
             <p className="flex gap-3">
               <MapPin className="h-5 w-5 shrink-0 text-cyan-300" />
-              1800 Logistics Parkway, Dallas, TX
+              Orangi town sector 4, Karachi, Pakistan
             </p>
             <p className="flex gap-3">
               <Phone className="h-5 w-5 shrink-0 text-cyan-300" />
-              +1 214 555 0100
+              +92 310 2426676
             </p>
             <p className="flex gap-3">
               <Mail className="h-5 w-5 shrink-0 text-cyan-300" />
-              support@autoflow.example
+              mashwanikhan192@gmail.com
             </p>
             <p className="flex gap-3">
               <Truck className="h-5 w-5 shrink-0 text-cyan-300" />

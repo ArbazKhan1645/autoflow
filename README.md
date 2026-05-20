@@ -16,6 +16,19 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Firebase Hosting
+
+This project is configured as a static Next.js export for Firebase Hosting.
+Always build before deploying so Firebase receives the latest `out` folder:
+
+```bash
+npm run deploy:firebase
+```
+
+The Firebase config uses clean URLs and trailing-slash directory output, so
+routes like `/products`, `/products/item-slug`, `/contact`, and `/crm` resolve
+correctly on Firebase Hosting.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

@@ -189,7 +189,7 @@ export const storefrontProducts: StorefrontProduct[] = [
     hot: true,
     badge: "Best value",
     image:
-      "https://images.unsplash.com/photo-1600706432502-77a0e2e32724?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80",
     description:
       "Custom-cut 7D mat package for Corolla with raised channels, stitched trim and premium heel pad.",
     fitment: "Toyota Corolla 2019-2026",

@@ -6,7 +6,6 @@ import {
   BarChart3,
   Bell,
   Bot,
-  Car,
   FilePenLine,
   Globe2,
   Layers3,
@@ -20,12 +19,14 @@ import {
   ShieldCheck,
   ShoppingCart,
   Sun,
+  UserCog,
   Users,
   Warehouse,
   X,
   type LucideIcon,
 } from "lucide-react";
 import { useEffect } from "react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { NAVIGATION_ITEMS } from "@/constants/navigation";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/models";
@@ -43,6 +44,7 @@ const iconMap: Record<string, LucideIcon> = {
   FilePenLine,
   ShoppingCart,
   Users,
+  UserCog,
   Warehouse,
   Bot,
   PhoneCall,
@@ -57,20 +59,24 @@ const roles: UserRole[] = ["owner", "admin", "sales", "inventory", "support"];
 function SidebarContent() {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
+  const activeUser = user ?? {
+    id: "guest",
+    fullName: "Admin Guest",
+    email: "guest@autoflow.example",
+    role: "owner" as UserRole,
+  };
   const unread = useNotificationStore(
     (state) => state.notifications.filter((item) => !item.read).length,
   );
 
   const allowedItems = NAVIGATION_ITEMS.filter((item) =>
-    item.roles.includes(user.role),
+    item.roles.includes(activeUser.role),
   );
 
   return (
     <div className="flex h-full flex-col">
-      <Link className="flex items-center gap-3 px-5 py-5" href="/crm/dashboard">
-        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-white shadow-lg shadow-blue-500/30">
-          <Car className="h-5 w-5" />
-        </div>
+      <Link className="flex items-center gap-3 px-5 py-5" href="/crm/dashboard" prefetch={false}>
+        <LogoMark className="h-11 w-11" />
         <div>
           <p className="text-base font-black tracking-normal text-slate-950">
             AutoFlow
@@ -99,6 +105,7 @@ function SidebarContent() {
               )}
               href={item.href}
               key={item.href}
+              prefetch={false}
             >
               <Icon className="h-4.5 w-4.5 shrink-0" />
               <span className="min-w-0 flex-1 truncate">{item.label}</span>
@@ -125,7 +132,7 @@ function SidebarContent() {
           </p>
         </div>
         <p className="mt-2 text-xs leading-5 text-slate-600">
-          Current workspace role is {user.role}. Navigation adapts live.
+          Current workspace role is {activeUser.role}. Navigation adapts live.
         </p>
       </div>
     </div>
@@ -142,7 +149,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     state.items.reduce((sum, line) => sum + line.quantity, 0),
   );
   const user = useAuthStore((state) => state.user);
+  const signOut = useAuthStore((state) => state.signOut);
   const setRole = useAuthStore((state) => state.setRole);
+  const activeUser = user ?? {
+    id: "guest",
+    fullName: "Admin Guest",
+    email: "guest@autoflow.example",
+    role: "owner" as UserRole,
+  };
   const unread = useNotificationStore(
     (state) => state.notifications.filter((item) => !item.read).length,
   );
@@ -206,6 +220,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               className="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:border-primary/30 hover:text-primary"
               href="/crm/orders"
+              prefetch={false}
             >
               <ShoppingCart className="h-4 w-4" />
               {cartCount > 0 ? (
@@ -217,6 +232,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <Link
               className="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:border-primary/30 hover:text-primary"
               href="/crm/notifications"
+              prefetch={false}
             >
               <Bell className="h-4 w-4" />
               {unread > 0 ? (
@@ -229,7 +245,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <select
               aria-label="Switch role"
               className="hidden h-10 rounded-lg border border-slate-300 bg-white px-3 text-sm font-semibold capitalize text-slate-700 shadow-sm outline-none sm:block"
-              value={user.role}
+              value={activeUser.role}
               onChange={(event) => setRole(event.target.value as UserRole)}
             >
               {roles.map((role) => (
@@ -239,8 +255,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               ))}
             </select>
             <Badge className="hidden md:inline-flex" tone="blue">
-              {user.fullName}
+              {activeUser.fullName}
             </Badge>
+            {user ? (
+              <Button size="sm" variant="ghost" onClick={signOut}>
+                Sign out
+              </Button>
+            ) : (
+              <Link
+                className="rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white transition hover:bg-primary"
+                href="/crm/auth"
+                prefetch={false}
+              >
+                Sign in
+              </Link>
+            )}
           </div>
         </header>
         <main className="px-4 py-6 sm:px-6 lg:px-8">{children}</main>

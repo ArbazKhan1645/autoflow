@@ -14,7 +14,7 @@ const contactCards = [
   { label: "Email", value: "support@autoflow.example", icon: Mail },
   {
     label: "Warehouse",
-    value: "1800 Logistics Parkway, Dallas, TX",
+    value: "Orangi town sector 4, Karachi, Pakistan",
     icon: MapPin,
   },
   {

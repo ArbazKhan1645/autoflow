@@ -6,6 +6,7 @@ import { Panel } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { SectionHeader } from "@/components/ui/section-header";
 import type { UserRole } from "@/models";
+import { demoUser } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth-store";
 import { useUiStore } from "@/store/ui-store";
 
@@ -13,6 +14,7 @@ const roles: UserRole[] = ["owner", "admin", "sales", "inventory", "support"];
 
 export function SettingsScreen() {
   const user = useAuthStore((state) => state.user);
+  const activeUser = user ?? demoUser;
   const setRole = useAuthStore((state) => state.setRole);
   const theme = useUiStore((state) => state.theme);
   const toggleTheme = useUiStore((state) => state.toggleTheme);
@@ -34,9 +36,9 @@ export function SettingsScreen() {
             </h2>
           </div>
           <div className="mt-5 grid gap-4">
-            <Input value={user.fullName} readOnly />
-            <Input value={user.email} readOnly />
-            <Select value={user.role} onChange={(event) => setRole(event.target.value as UserRole)}>
+            <Input value={activeUser.fullName} readOnly />
+            <Input value={activeUser.email} readOnly />
+            <Select value={activeUser.role} onChange={(event) => setRole(event.target.value as UserRole)}>
               {roles.map((role) => (
                 <option key={role} value={role}>
                   {role}

@@ -26,7 +26,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
             title="Product not found"
             description="This item may be unavailable. Browse the product page for current stock."
             action={
-              <Link className={buttonClassName({ variant: "primary" })} href="/products">
+              <Link className={buttonClassName({ variant: "primary" })} href="/products" prefetch={false}>
                 Back to products
               </Link>
             }
@@ -44,7 +44,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
     <PublicPageShell>
       <section className="bg-white py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Link className="inline-flex items-center gap-2 text-sm font-black text-primary" href="/products">
+          <Link className="inline-flex items-center gap-2 text-sm font-black text-primary" href="/products" prefetch={false}>
             <ArrowLeft className="h-4 w-4" />
             Back to products
           </Link>
@@ -133,6 +133,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
                   className: "flex-1",
                 })}
                 href="/contact"
+                prefetch={false}
               >
                 Ask before buying
               </Link>
@@ -161,6 +162,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
                 className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
                 href={`/products/${item.slug}`}
                 key={item.id}
+                prefetch={false}
               >
                 <div className="relative h-44">
                   <Image alt={item.name} className="object-cover" fill sizes="33vw" src={item.image} />
