@@ -15,10 +15,27 @@
 import type { ClientConfig } from "./types";
 import { autoflowparts } from "./autoflowparts";
 import { arbazautostore } from "./arbazautostore";
+// Prospect / onboarding clients (see Google Maps lead list).
+import { ctautoparts } from "./ctautoparts";
+import { kingsford } from "./kingsford";
+import { jami } from "./jami";
+import { firstautoparts } from "./firstautoparts";
+import { aceautoparts } from "./aceautoparts";
+import { airplex } from "./airplex";
+import { ara } from "./ara";
+import { actionaccessories } from "./actionaccessories";
 
 export const CLIENTS = {
   autoflowparts,
   arbazautostore,
+  ctautoparts,
+  kingsford,
+  jami,
+  firstautoparts,
+  aceautoparts,
+  airplex,
+  ara,
+  actionaccessories,
 } as const;
 
 export type ClientSlug = keyof typeof CLIENTS;
