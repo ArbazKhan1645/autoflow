@@ -101,6 +101,60 @@ They never see the root, the client list, or any other client.
 
 ---
 
+## Dedicated-domain build (single client, served at root)
+
+When a client has their **own domain** you usually don't want their slug in the
+URL (`theirdomain.com/arbazautostore/` looks wrong). Build a **single-client
+bundle** instead: only that client is included, and their site is served at the
+**root** with no slug in the path.
+
+```bash
+npm run build:client -- arbazautostore
+firebase deploy --only hosting   # deploy to their site / domain
+```
+
+Result for that build:
+- `https://theirdomain.com/` loads the client directly (no `/arbazautostore/`).
+- All links are root-relative (`/products`, `/crm`, …) — the slug never appears.
+- No other client is bundled or reachable.
+- Unknown paths still show the neutral 404 page.
+
+How the slug is passed (any of these is equivalent — it sets `NEXT_PUBLIC_CLIENT`):
+
+```bash
+npm run build:client -- arbazautostore          # recommended
+# or, directly:
+#   PowerShell:  $env:NEXT_PUBLIC_CLIENT="arbazautostore"; npm run build
+#   bash:        NEXT_PUBLIC_CLIENT=arbazautostore npm run build
+```
+
+Behavior summary:
+
+| Build command | URL of the client | Other clients | Bad/typo slug |
+|---|---|---|---|
+| `npm run build` (no var) | `…/<slug>/` (multi-tenant) | all included, each at its own `/<slug>/` | n/a |
+| `npm run build:client -- <slug>` | `…/` (root, no slug) | excluded | site shows only the 404 page |
+
+> Keep using the plain `npm run build` for the shared multi-tenant deployment.
+> Use `build:client` only for a client that gets their own domain/hosting.
+
+## Running the dev server for one client
+
+The same client selection works in development:
+
+```bash
+npm run dev              # all clients — visit http://localhost:3000/<slug>/
+npm run dev:client -- arbazautostore   # one client
+```
+
+In `dev:client` mode:
+- `http://localhost:3000/` redirects to the active client.
+- Every other client slug returns the 404 page (not reachable).
+- Links keep the `/<slug>/` prefix while developing (nothing is flattened until
+  the `build:client` production export), so navigation works normally.
+
+---
+
 ## How it works (for maintainers)
 
 - `src/lib/clients/` — the registry. `getClientSlugs()` drives

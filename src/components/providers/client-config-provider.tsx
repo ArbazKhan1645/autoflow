@@ -3,7 +3,7 @@
 import { createContext, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import type { ClientCatalog, ClientConfig } from "@/lib/clients";
-import { resolveCatalog } from "@/lib/clients";
+import { isSingleClientBuild, resolveCatalog } from "@/lib/clients";
 
 interface ClientContextValue {
   config: ClientConfig;
@@ -63,10 +63,16 @@ export function useClient() {
   const pathname = usePathname();
 
   return useMemo(() => {
-    const base = `/${slug}`;
+    // The /<slug>/ prefix is dropped ONLY in the production single-client
+    // export, where the post-build step flattens that client to the site root.
+    // In dev (next dev) nothing is flattened, so we keep the prefix even in
+    // single-client mode and let "/" redirect to "/<slug>" instead.
+    const flattenToRoot =
+      isSingleClientBuild && process.env.NODE_ENV === "production";
+    const base = flattenToRoot ? "" : `/${slug}`;
 
     const href = (path: string) => {
-      if (!path || path === "/") return base;
+      if (!path || path === "/") return base || "/";
       // Leave absolute URLs, hashes and query-only links untouched.
       if (/^(https?:|mailto:|tel:|#|\?)/.test(path)) return path;
       const clean = path.startsWith("/") ? path : `/${path}`;
@@ -80,8 +86,11 @@ export function useClient() {
     };
 
     // Strip the client prefix off the current pathname ("/" at root).
-    const relativePath =
-      pathname === base ? "/" : pathname.replace(`${base}`, "") || "/";
+    const relativePath = !base
+      ? pathname || "/"
+      : pathname === base
+        ? "/"
+        : pathname.replace(`${base}`, "") || "/";
 
     return { slug, config, href, isActive, relativePath };
   }, [config, slug, pathname]);
