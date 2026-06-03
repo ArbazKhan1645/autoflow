@@ -1,4 +1,4 @@
-import type { ClientConfig } from "@/lib/clients";
+import type { ClientConfig } from "@/lib/clients/types";
 
 // ─────────────────────────────────────────────────────────────
 // Injects the active client's theme as CSS variable overrides.

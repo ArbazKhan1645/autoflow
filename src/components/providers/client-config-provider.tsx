@@ -2,8 +2,9 @@
 
 import { createContext, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import type { ClientCatalog, ClientConfig } from "@/lib/clients";
-import { isSingleClientBuild, resolveCatalog } from "@/lib/clients";
+import type { ClientCatalog, ClientConfig } from "@/lib/clients/types";
+import { resolveCatalog } from "@/lib/clients/_base-catalog";
+import { isSingleClientBuild } from "@/lib/clients/mode";
 
 interface ClientContextValue {
   config: ClientConfig;

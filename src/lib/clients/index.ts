@@ -42,21 +42,10 @@ export type ClientSlug = keyof typeof CLIENTS;
 
 const REGISTRY: Record<string, ClientConfig> = CLIENTS;
 
-// ─────────────────────────────────────────────────────────────
-// SINGLE-CLIENT BUILD MODE
-// Set NEXT_PUBLIC_CLIENT=<slug> at build time (see `npm run build:client`)
-// to produce a dedicated build for ONE client, served at the ROOT of the
-// domain with no /<slug>/ prefix in the URL. Only that client's config is
-// bundled/accessible. When the var is unset, the app stays multi-tenant and
-// every client is served from its /<slug>/ path.
-//
-// Inlined by Next at build time because of the NEXT_PUBLIC_ prefix, so it is
-// available to both server (generateStaticParams) and client components.
-// ─────────────────────────────────────────────────────────────
-export const SINGLE_CLIENT_SLUG: string | null =
-  process.env.NEXT_PUBLIC_CLIENT?.trim() || null;
-
-export const isSingleClientBuild = SINGLE_CLIENT_SLUG !== null;
+// Build-mode flags live in ./mode so client components can read them without
+// importing this registry (which would bundle every client's config).
+export { SINGLE_CLIENT_SLUG, isSingleClientBuild } from "./mode";
+import { SINGLE_CLIENT_SLUG } from "./mode";
 
 export function getClientSlugs(): string[] {
   // Production single-client export: emit ONLY the targeted client, so the
