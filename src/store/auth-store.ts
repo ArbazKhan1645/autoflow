@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AppUser, UserRole } from "@/models";
 import { demoUser } from "@/services/auth.service";
+import { clientScopedStorage } from "./client-scoped-storage";
 
 interface AuthState {
   user: AppUser | null;
@@ -34,7 +35,8 @@ export const useAuthStore = create<AuthState>()(
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {
-      name: "autoflow-admin-auth",
+      name: "admin-auth",
+      storage: clientScopedStorage,
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },

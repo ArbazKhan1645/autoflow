@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { clientScopedStorage } from "./client-scoped-storage";
 
 export interface CustomerUser {
   id: string;
@@ -58,7 +59,8 @@ export const useCustomerAuthStore = create<CustomerAuthState>()(
         set({ user: null, verificationEmail: null, verificationName: null }),
     }),
     {
-      name: "autoflow-customer-auth",
+      name: "customer-auth",
+      storage: clientScopedStorage,
     },
   ),
 );
