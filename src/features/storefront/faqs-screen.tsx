@@ -4,10 +4,11 @@ import { useState } from "react";
 import { ChevronDown, HelpCircle, MessageCircle, Search } from "lucide-react";
 import { PublicPageShell } from "@/components/public/public-page-shell";
 import { Panel } from "@/components/ui/card";
-import { faqs } from "@/data/storefront";
+import { useCatalog } from "@/components/providers/client-config-provider";
 import { cn } from "@/lib/utils";
 
 export function FaqsScreen() {
+  const { faqs } = useCatalog();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(0);
   const filtered = faqs.filter((faq) =>

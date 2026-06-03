@@ -1,14 +1,11 @@
+"use client";
+
 import type { LucideIcon } from "lucide-react";
 import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
-import { cn, compactNumber, currency } from "@/lib/utils";
+import { useClientCurrency } from "@/components/providers/client-config-provider";
+import { cn } from "@/lib/utils";
 import type { DashboardMetric } from "@/models";
 import { Panel } from "./card";
-
-function metricValue(metric: DashboardMetric) {
-  if (metric.format === "currency") return currency.format(metric.value);
-  if (metric.format === "percentage") return `${metric.value}%`;
-  return compactNumber.format(metric.value);
-}
 
 export function MetricCard({
   metric,
@@ -19,6 +16,12 @@ export function MetricCard({
   icon?: LucideIcon;
   className?: string;
 }) {
+  const { currency, compactNumber } = useClientCurrency();
+  const metricValue = (() => {
+    if (metric.format === "currency") return currency.format(metric.value);
+    if (metric.format === "percentage") return `${metric.value}%`;
+    return compactNumber.format(metric.value);
+  })();
   const TrendIcon =
     metric.trend === "up" ? ArrowUpRight : metric.trend === "down" ? ArrowDownRight : Minus;
 
@@ -30,7 +33,7 @@ export function MetricCard({
             {metric.label}
           </p>
           <p className="mt-3 text-2xl font-bold text-slate-950 dark:text-white">
-            {metricValue(metric)}
+            {metricValue}
           </p>
         </div>
         {Icon ? (

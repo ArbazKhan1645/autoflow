@@ -27,6 +27,10 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { LogoMark } from "@/components/brand/logo-mark";
+import {
+  useClient,
+  useClientConfig,
+} from "@/components/providers/client-config-provider";
 import { NAVIGATION_ITEMS } from "@/constants/navigation";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@/models";
@@ -57,12 +61,13 @@ const iconMap: Record<string, LucideIcon> = {
 const roles: UserRole[] = ["owner", "admin", "sales", "inventory", "support"];
 
 function SidebarContent() {
-  const pathname = usePathname();
+  const { href, isActive } = useClient();
+  const config = useClientConfig();
   const user = useAuthStore((state) => state.user);
   const activeUser = user ?? {
     id: "guest",
     fullName: "Admin Guest",
-    email: "guest@autoflow.example",
+    email: "guest@example.com",
     role: "owner" as UserRole,
   };
   const unread = useNotificationStore(
@@ -75,11 +80,11 @@ function SidebarContent() {
 
   return (
     <div className="flex h-full flex-col">
-      <Link className="flex items-center gap-3 px-5 py-5" href="/crm/dashboard" prefetch={false}>
+      <Link className="flex items-center gap-3 px-5 py-5" href={href("/crm/dashboard")} prefetch={false}>
         <LogoMark className="h-11 w-11" />
         <div>
           <p className="text-base font-black tracking-normal text-slate-950">
-            AutoFlow
+            {config.storeName}
           </p>
           <p className="text-xs font-semibold text-slate-500">
             CRM Admin OS
@@ -90,7 +95,7 @@ function SidebarContent() {
       <nav className="flex-1 space-y-1 px-3 py-3">
         {allowedItems.map((item) => {
           const Icon = iconMap[item.icon] ?? LayoutDashboard;
-          const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+          const active = isActive(item.href) || isActive(item.href, { exact: false });
           const badge =
             item.href === "/crm/notifications" && unread > 0
               ? unread
@@ -103,7 +108,7 @@ function SidebarContent() {
                 active &&
                   "bg-primary text-white shadow-lg shadow-blue-500/20 hover:bg-primary hover:text-white",
               )}
-              href={item.href}
+              href={href(item.href)}
               key={item.href}
               prefetch={false}
             >
@@ -141,6 +146,7 @@ function SidebarContent() {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { href } = useClient();
   const sidebarOpen = useUiStore((state) => state.sidebarOpen);
   const setSidebarOpen = useUiStore((state) => state.setSidebarOpen);
   const toggleTheme = useUiStore((state) => state.toggleTheme);
@@ -154,7 +160,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const activeUser = user ?? {
     id: "guest",
     fullName: "Admin Guest",
-    email: "guest@autoflow.example",
+    email: "guest@example.com",
     role: "owner" as UserRole,
   };
   const unread = useNotificationStore(
@@ -219,7 +225,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </div>
             <Link
               className="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:border-primary/30 hover:text-primary"
-              href="/crm/orders"
+              href={href("/crm/orders")}
               prefetch={false}
             >
               <ShoppingCart className="h-4 w-4" />
@@ -231,7 +237,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
             <Link
               className="relative inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:border-primary/30 hover:text-primary"
-              href="/crm/notifications"
+              href={href("/crm/notifications")}
               prefetch={false}
             >
               <Bell className="h-4 w-4" />
@@ -264,7 +270,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             ) : (
               <Link
                 className="rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white transition hover:bg-primary"
-                href="/crm/auth"
+                href={href("/crm/auth")}
                 prefetch={false}
               >
                 Sign in

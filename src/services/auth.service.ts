@@ -3,8 +3,8 @@ import { mockApi } from "./mock-api";
 
 export const demoUser: AppUser = {
   id: "usr-001",
-  fullName: "Arbaz Khan",
-  email: "mashwanikhan192@gmail.com",
+  fullName: "Store Owner",
+  email: "owner@example.com",
   role: "owner",
 };
 

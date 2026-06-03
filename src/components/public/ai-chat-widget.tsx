@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, MessageCircle, Send, X } from "lucide-react";
 import { useState } from "react";
+import { useClientConfig } from "@/components/providers/client-config-provider";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
@@ -18,6 +19,7 @@ const seedMessages = [
 ];
 
 export function AiChatWidget() {
+  const config = useClientConfig();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState(seedMessages);
@@ -52,7 +54,7 @@ export function AiChatWidget() {
                   <Bot className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="font-black">AutoFlow AI</p>
+                  <p className="font-black">{config.storeName} AI</p>
                   <p className="text-xs text-blue-100">Product support assistant</p>
                 </div>
               </div>

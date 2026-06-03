@@ -22,7 +22,11 @@ import { StatusPill } from "@/components/ui/status-pill";
 import { useAnalyticsOverview } from "@/hooks/use-analytics";
 import { useInventoryOverview } from "@/hooks/use-inventory";
 import { useOrders } from "@/hooks/use-orders";
-import { currency, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import {
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 
 const metricIcons = [DollarSign, Users, BarChart3, Package];
 
@@ -34,6 +38,8 @@ const quickLinks = [
 ];
 
 export function DashboardOverview() {
+  const { href } = useClient();
+  const { currency } = useClientCurrency();
   const analytics = useAnalyticsOverview();
   const inventory = useInventoryOverview();
   const orders = useOrders({ status: "all" });
@@ -49,7 +55,7 @@ export function DashboardOverview() {
         action={
           <Link
             className={buttonClassName({ variant: "primary", size: "md" })}
-            href="/catalog"
+            href={href("/catalog")}
           >
             Search catalog
             <ArrowRight className="h-4 w-4" />
@@ -99,7 +105,7 @@ export function DashboardOverview() {
             {quickLinks.map((link) => (
               <Link
                 className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50 p-4 transition hover:border-primary/30 hover:bg-blue-50 dark:border-white/10 dark:bg-white/5"
-                href={link.href}
+                href={href(link.href)}
                 key={link.href}
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-primary shadow-sm dark:bg-white/10">

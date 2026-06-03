@@ -8,11 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { SectionHeader } from "@/components/ui/section-header";
-import { megaMenu, storefrontProducts } from "@/data/storefront";
+import { useCatalog } from "@/components/providers/client-config-provider";
 
 type SheetMode = "category" | "subcategory" | "subproduct" | null;
 
 export function CategoryManagementScreen() {
+  const { megaMenu, storefrontProducts } = useCatalog();
   const [sheet, setSheet] = useState<SheetMode>(null);
 
   return (

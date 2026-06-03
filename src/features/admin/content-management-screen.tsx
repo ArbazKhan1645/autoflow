@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { SectionHeader } from "@/components/ui/section-header";
-import { faqs, storefrontVideos } from "@/data/storefront";
+import { useCatalog } from "@/components/providers/client-config-provider";
 
 type SheetMode = "video" | "faq" | "about" | "banner" | null;
 
@@ -18,15 +18,16 @@ const aboutBlocks = [
   "Account checkout with order context and support notes.",
 ];
 
-const contentMetrics = [
-  { label: "Videos", value: storefrontVideos.length, icon: Video },
-  { label: "FAQs", value: faqs.length, icon: HelpCircle },
-  { label: "About blocks", value: aboutBlocks.length, icon: FileText },
-  { label: "Home banners", value: 4, icon: ImagePlus },
-];
-
 export function ContentManagementScreen() {
+  const { faqs, storefrontVideos } = useCatalog();
   const [sheet, setSheet] = useState<SheetMode>(null);
+
+  const contentMetrics = [
+    { label: "Videos", value: storefrontVideos.length, icon: Video },
+    { label: "FAQs", value: faqs.length, icon: HelpCircle },
+    { label: "About blocks", value: aboutBlocks.length, icon: FileText },
+    { label: "Home banners", value: 4, icon: ImagePlus },
+  ];
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-6">

@@ -9,9 +9,14 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Panel } from "@/components/ui/card";
 import { calculateCartTotals, useCartStore } from "@/store/cart-store";
 import { useCustomerAuthStore } from "@/store/customer-auth-store";
-import { currency, preciseCurrency } from "@/lib/utils";
+import {
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 
 export function AccountScreen() {
+  const { href } = useClient();
+  const { currency, preciseCurrency } = useClientCurrency();
   const user = useCustomerAuthStore((state) => state.user);
   const signOut = useCustomerAuthStore((state) => state.signOut);
   const items = useCartStore((state) => state.items);
@@ -27,7 +32,7 @@ export function AccountScreen() {
             icon={UserRound}
             title="Sign in to access My Account"
             description="Your account keeps cart, checkout and order details together."
-            action={<Link className={buttonClassName({ variant: "primary" })} href="/auth">Sign in</Link>}
+            action={<Link className={buttonClassName({ variant: "primary" })} href={href("/auth")}>Sign in</Link>}
           />
         </div>
       </PublicPageShell>
@@ -65,7 +70,7 @@ export function AccountScreen() {
                 <EmptyState
                   title="Your cart is empty"
                   description="Add products from the storefront and come back here to checkout."
-                  action={<Link className={buttonClassName({ variant: "primary" })} href="/products">Browse products</Link>}
+                  action={<Link className={buttonClassName({ variant: "primary" })} href={href("/products")}>Browse products</Link>}
                 />
               </div>
             ) : (
@@ -115,7 +120,7 @@ export function AccountScreen() {
             </div>
             <Link
               className={buttonClassName({ variant: "primary", size: "lg", className: "mt-5 w-full" })}
-              href={items.length ? "/account/checkout" : "/products"}
+              href={href(items.length ? "/account/checkout" : "/products")}
             >
               {items.length ? "Proceed to checkout" : "Browse products"}
             </Link>

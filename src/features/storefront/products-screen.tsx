@@ -11,8 +11,12 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Panel } from "@/components/ui/card";
 import { Select } from "@/components/ui/input";
-import { megaMenu, storefrontProducts, type StorefrontProduct } from "@/data/storefront";
-import { currency } from "@/lib/utils";
+import { type StorefrontProduct } from "@/data/storefront";
+import {
+  useCatalog,
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 import { useCartStore } from "@/store/cart-store";
 import { useNotificationStore } from "@/store/notification-store";
 
@@ -32,12 +36,14 @@ const offerBanners = [
 ];
 
 function ProductCard({ product }: { product: StorefrontProduct }) {
+  const { href } = useClient();
+  const { currency } = useClientCurrency();
   const addStorefrontItem = useCartStore((state) => state.addStorefrontItem);
   const pushToast = useNotificationStore((state) => state.pushToast);
 
   return (
     <Panel className="group overflow-hidden">
-      <Link href={`/products/${product.slug}`} prefetch={false}>
+      <Link href={href(`/products/${product.slug}`)} prefetch={false}>
         <div className="relative h-52 bg-slate-100">
           <Image
             alt={product.name}
@@ -55,7 +61,7 @@ function ProductCard({ product }: { product: StorefrontProduct }) {
         <p className="text-xs font-black uppercase tracking-[0.16em] text-primary">
           {product.category} / {product.childCategory}
         </p>
-        <Link href={`/products/${product.slug}`} prefetch={false}>
+        <Link href={href(`/products/${product.slug}`)} prefetch={false}>
           <h2 className="mt-2 line-clamp-2 min-h-12 text-lg font-black text-slate-950 transition hover:text-primary">
             {product.name}
           </h2>
@@ -110,6 +116,7 @@ export function ProductsScreen() {
   const [category, setCategory] = useState(initialCategory);
   const [sort, setSort] = useState("featured");
   const [priceRange, setPriceRange] = useState("all");
+  const { megaMenu, storefrontProducts } = useCatalog();
 
   const categories = ["All", ...megaMenu.map((item) => item.label)];
   const subcategories = Array.from(

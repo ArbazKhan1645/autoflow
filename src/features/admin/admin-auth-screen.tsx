@@ -12,6 +12,10 @@ import { Input } from "@/components/ui/input";
 import { demoUser } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth-store";
 import { useNotificationStore } from "@/store/notification-store";
+import {
+  useClient,
+  useClientConfig,
+} from "@/components/providers/client-config-provider";
 
 const adminFeatures = [
   "Role-based CRM access",
@@ -21,6 +25,8 @@ const adminFeatures = [
 
 export function AdminAuthScreen() {
   const router = useRouter();
+  const { href } = useClient();
+  const config = useClientConfig();
   const signIn = useAuthStore((state) => state.signIn);
   const user = useAuthStore((state) => state.user);
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
@@ -32,15 +38,15 @@ export function AdminAuthScreen() {
     signIn(email);
     pushToast({
       title: "Admin signed in",
-      message: "Welcome to AutoFlow CRM dashboard.",
+      message: `Welcome to ${config.storeName} CRM dashboard.`,
       severity: "success",
     });
-    router.push("/crm/dashboard");
+    router.push(href("/crm/dashboard"));
   };
 
   useEffect(() => {
-    if (hasHydrated && user) router.replace("/crm/dashboard");
-  }, [hasHydrated, router, user]);
+    if (hasHydrated && user) router.replace(href("/crm/dashboard"));
+  }, [hasHydrated, href, router, user]);
 
   return (
     <main className="min-h-screen bg-[#f6faff] text-slate-950 premium-grid">
@@ -56,9 +62,9 @@ export function AdminAuthScreen() {
           />
           <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950/82 to-slate-950/40" />
           <div className="relative flex h-full flex-col justify-between p-12">
-            <Link className="flex items-center gap-3" href="/">
+            <Link className="flex items-center gap-3" href={href("/crm")}>
               <LogoMark className="h-11 w-11" priority />
-              <span className="text-xl font-black">AutoFlow CRM</span>
+              <span className="text-xl font-black">{config.storeName} CRM</span>
             </Link>
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/16 bg-white/10 px-3 py-1.5 text-sm font-bold text-blue-50 backdrop-blur">

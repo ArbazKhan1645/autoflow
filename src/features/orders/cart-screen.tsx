@@ -10,11 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Panel } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { useCreateOrderDraft } from "@/hooks/use-orders";
-import { currency, preciseCurrency } from "@/lib/utils";
+import {
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 import { calculateCartTotals, useCartStore } from "@/store/cart-store";
 import { useNotificationStore } from "@/store/notification-store";
 
 export function CartScreen() {
+  const { href } = useClient();
+  const { currency, preciseCurrency } = useClientCurrency();
   const items = useCartStore((state) => state.items);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
@@ -55,7 +60,7 @@ export function CartScreen() {
           title="Cart is ready for parts"
           description="Add products from the catalog to build a quote, draft order or invoice."
           action={
-            <Link className={buttonClassName({ variant: "primary" })} href="/catalog">
+            <Link className={buttonClassName({ variant: "primary" })} href={href("/catalog")}>
               Search catalog
             </Link>
           }
@@ -202,7 +207,7 @@ export function CartScreen() {
                 variant: "ghost",
                 className: "mt-2 w-full",
               })}
-              href="/orders"
+              href={href("/orders")}
             >
               View orders
             </Link>

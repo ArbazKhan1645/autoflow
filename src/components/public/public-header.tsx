@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   ChevronDown,
   Menu,
@@ -13,8 +13,13 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { LogoMark } from "@/components/brand/logo-mark";
-import { megaMenu, storefrontProducts } from "@/data/storefront";
-import { cn, currency } from "@/lib/utils";
+import {
+  useCatalog,
+  useClient,
+  useClientConfig,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
+import { cn } from "@/lib/utils";
 import { useCartStore } from "@/store/cart-store";
 import { useCustomerAuthStore } from "@/store/customer-auth-store";
 import { Button } from "../ui/button";
@@ -29,7 +34,10 @@ const navItems = [
 
 export function PublicHeader() {
   const router = useRouter();
-  const pathname = usePathname();
+  const { href, isActive } = useClient();
+  const config = useClientConfig();
+  const { megaMenu, storefrontProducts } = useCatalog();
+  const { currency } = useClientCurrency();
   const [search, setSearch] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const user = useCustomerAuthStore((state) => state.user);
@@ -39,7 +47,11 @@ export function PublicHeader() {
 
   const submitSearch = () => {
     const query = search.trim();
-    router.push(query ? `/products?search=${encodeURIComponent(query)}` : "/products");
+    router.push(
+      query
+        ? href(`/products?search=${encodeURIComponent(query)}`)
+        : href("/products"),
+    );
     setMobileOpen(false);
   };
 
@@ -65,14 +77,14 @@ export function PublicHeader() {
     <>
       <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-18 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
-          <Link className="flex shrink-0 items-center gap-3" href="/">
+          <Link className="flex shrink-0 items-center gap-3" href={href("/")}>
             <LogoMark className="h-11 w-11" priority />
             <span>
               <span className="block text-lg font-black tracking-normal text-slate-950">
-                AutoFlow Parts
+                {config.storeName}
               </span>
               <span className="hidden text-xs font-bold uppercase tracking-[0.14em] text-primary sm:block">
-                Premium auto store
+                {config.storeTagline}
               </span>
             </span>
           </Link>
@@ -104,9 +116,9 @@ export function PublicHeader() {
               <Link
                 className={cn(
                   "rounded-lg px-3 py-2 text-sm font-bold text-slate-600 transition hover:bg-blue-50 hover:text-primary",
-                  pathname === item.href && "bg-blue-50 text-primary",
+                  isActive(item.href) && "bg-blue-50 text-primary",
                 )}
-                href={item.href}
+                href={href(item.href)}
                 key={item.href}
                 prefetch={false}
               >
@@ -117,7 +129,7 @@ export function PublicHeader() {
 
           <Link
             className="relative hidden h-11 w-11 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 transition hover:border-primary/30 hover:text-primary sm:inline-flex"
-            href="/account"
+            href={href("/account")}
             prefetch={false}
           >
             <ShoppingBag className="h-5 w-5" />
@@ -130,7 +142,7 @@ export function PublicHeader() {
 
           <Link
             className="hidden h-11 items-center gap-2 rounded-lg bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-primary md:inline-flex"
-            href={user ? "/account" : "/auth"}
+            href={href(user ? "/account" : "/auth")}
             prefetch={false}
           >
             <UserRound className="h-4 w-4" />
@@ -154,7 +166,7 @@ export function PublicHeader() {
               <div className="group relative" key={category.label}>
                 <Link
                   className="flex h-12 items-center gap-1 rounded-lg px-4 text-sm font-bold text-slate-700 transition hover:bg-blue-50 hover:text-primary"
-                  href={category.href}
+                  href={href(category.href)}
                   prefetch={false}
                 >
                   {category.label}
@@ -169,7 +181,7 @@ export function PublicHeader() {
                       {category.children.map((group) => (
                         <Link
                           className="block rounded-lg border border-slate-100 bg-slate-50 p-4 transition hover:border-primary/30 hover:bg-blue-50"
-                          href={group.href}
+                          href={href(group.href)}
                           key={group.label}
                           prefetch={false}
                         >
@@ -188,7 +200,7 @@ export function PublicHeader() {
                         group.products.map((product) => (
                           <Link
                             className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-blue-50 hover:text-primary"
-                            href={product.href}
+                            href={href(product.href)}
                             key={`${group.label}-${product.label}`}
                             prefetch={false}
                           >
@@ -208,7 +220,7 @@ export function PublicHeader() {
                           .map((product) => (
                             <Link
                               className="block rounded-lg bg-white/8 p-3 transition hover:bg-white/14"
-                              href={`/products/${product.slug}`}
+                              href={href(`/products/${product.slug}`)}
                               key={product.id}
                               prefetch={false}
                             >
@@ -253,14 +265,14 @@ export function PublicHeader() {
                 <div className="flex items-center justify-between gap-3">
                   <Link
                     className="flex min-w-0 items-center gap-3"
-                    href="/"
+                    href={href("/")}
                     prefetch={false}
                     onClick={() => setMobileOpen(false)}
                   >
                     <LogoMark className="h-10 w-10" />
                     <span className="min-w-0">
                       <span className="block truncate text-base font-black text-slate-950">
-                        AutoFlow Parts
+                        {config.storeName}
                       </span>
                       <span className="block truncate text-xs font-bold uppercase tracking-[0.14em] text-primary">
                         Mobile menu
@@ -298,9 +310,9 @@ export function PublicHeader() {
                     <Link
                       className={cn(
                         "rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-black text-slate-800 transition hover:border-primary/30 hover:bg-blue-50 hover:text-primary",
-                        pathname === item.href && "border-primary/30 bg-blue-50 text-primary",
+                        isActive(item.href) && "border-primary/30 bg-blue-50 text-primary",
                       )}
-                      href={item.href}
+                      href={href(item.href)}
                       key={item.href}
                       prefetch={false}
                       onClick={() => setMobileOpen(false)}
@@ -310,7 +322,7 @@ export function PublicHeader() {
                   ))}
                   <Link
                     className="relative rounded-lg border border-slate-200 bg-white px-3 py-3 text-sm font-black text-slate-800 transition hover:border-primary/30 hover:bg-blue-50 hover:text-primary"
-                    href="/account"
+                    href={href("/account")}
                     prefetch={false}
                     onClick={() => setMobileOpen(false)}
                   >
@@ -323,7 +335,7 @@ export function PublicHeader() {
                   </Link>
                   <Link
                     className="rounded-lg bg-slate-950 px-3 py-3 text-sm font-black text-white shadow-lg shadow-slate-950/15"
-                    href={user ? "/account" : "/auth"}
+                    href={href(user ? "/account" : "/auth")}
                     prefetch={false}
                     onClick={() => setMobileOpen(false)}
                   >
@@ -343,7 +355,7 @@ export function PublicHeader() {
                       >
                         <Link
                           className="flex items-center justify-between gap-3 font-black text-slate-950"
-                          href={category.href}
+                          href={href(category.href)}
                           prefetch={false}
                           onClick={() => setMobileOpen(false)}
                         >
@@ -355,7 +367,7 @@ export function PublicHeader() {
                             <div key={group.label}>
                               <Link
                                 className="text-sm font-bold text-slate-700 hover:text-primary"
-                                href={group.href}
+                                href={href(group.href)}
                                 prefetch={false}
                                 onClick={() => setMobileOpen(false)}
                               >
@@ -365,7 +377,7 @@ export function PublicHeader() {
                                 {group.products.map((item) => (
                                   <Link
                                     className="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-bold text-primary transition hover:bg-primary hover:text-white"
-                                    href={item.href}
+                                    href={href(item.href)}
                                     key={`${category.label}-${group.label}-${item.label}`}
                                     prefetch={false}
                                     onClick={() => setMobileOpen(false)}

@@ -7,7 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 import { StatusPill } from "@/components/ui/status-pill";
-import { currency } from "@/lib/utils";
+import {
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 import type { Product } from "@/models";
 
 export function ProductCard({
@@ -17,12 +20,14 @@ export function ProductCard({
   product: Product;
   onAdd: (product: Product) => void;
 }) {
+  const { href } = useClient();
+  const { currency } = useClientCurrency();
   const salePrice = product.discountPrice ?? product.sellingPrice;
   const isLowStock = product.stockQuantity <= product.minimumStock;
 
   return (
     <Panel className="group overflow-hidden">
-      <Link className="block" href={`/catalog/${product.slug}`}>
+      <Link className="block" href={href(`/catalog/${product.slug}`)}>
         <div className="relative h-48 overflow-hidden bg-slate-100">
           <Image
             alt={product.productName}
@@ -43,7 +48,7 @@ export function ProductCard({
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
               {product.category} / {product.subCategory}
             </p>
-            <Link href={`/catalog/${product.slug}`}>
+            <Link href={href(`/catalog/${product.slug}`)}>
               <h2 className="mt-2 line-clamp-2 min-h-12 text-lg font-black text-slate-950 transition hover:text-primary dark:text-white">
                 {product.productName}
               </h2>

@@ -30,7 +30,7 @@ export const useCustomerAuthStore = create<CustomerAuthState>()(
         set({
           user: {
             id: "customer-demo",
-            fullName: "AutoFlow Customer",
+            fullName: "Customer",
             email,
             verified: true,
           },

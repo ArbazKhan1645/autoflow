@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { Award, CheckCircle2, Globe2, PackageCheck, ShieldCheck, Users } from "lucide-react";
 import { PublicPageShell } from "@/components/public/public-page-shell";
+import { useClientConfig } from "@/components/providers/client-config-provider";
 import { Panel } from "@/components/ui/card";
 
 const milestones = [
@@ -34,6 +37,7 @@ const buyerGroups = [
 ];
 
 export function AboutScreen() {
+  const config = useClientConfig();
   return (
     <PublicPageShell>
       <section className="relative overflow-hidden bg-slate-950 py-20 text-white">
@@ -47,7 +51,7 @@ export function AboutScreen() {
             We are building the auto parts store customers can trust before they buy.
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
-            AutoFlow Parts focuses on premium accessories, correct fitment, clean
+            {config.storeName} focuses on premium accessories, correct fitment, clean
             ordering and reliable fulfillment for everyday drivers, garages, fleets and export buyers.
           </p>
         </div>

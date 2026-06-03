@@ -10,10 +10,14 @@ import { Panel } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { SectionHeader } from "@/components/ui/section-header";
 import { StatusPill } from "@/components/ui/status-pill";
-import { products } from "@/data/products";
-import { currency } from "@/lib/utils";
+import {
+  useCatalog,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 
 export function ProductManagementScreen() {
+  const { currency } = useClientCurrency();
+  const { products } = useCatalog();
   const [query, setQuery] = useState("");
   const [sheet, setSheet] = useState<"product" | "variant" | null>(null);
 

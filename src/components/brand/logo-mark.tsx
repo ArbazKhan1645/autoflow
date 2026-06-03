@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useClientConfig } from "@/components/providers/client-config-provider";
 import { cn } from "@/lib/utils";
 
 interface LogoMarkProps {
@@ -12,6 +15,8 @@ export function LogoMark({
   imageClassName,
   priority = false,
 }: LogoMarkProps) {
+  const config = useClientConfig();
+
   return (
     <span
       className={cn(
@@ -20,12 +25,12 @@ export function LogoMark({
       )}
     >
       <Image
-        alt="AutoFlow logo mark"
+        alt={`${config.storeName} logo mark`}
         className={cn("object-contain", imageClassName)}
         fill
         priority={priority}
         sizes="64px"
-        src="/brand/autoflow-mark.png"
+        src={config.logoMarkPath}
       />
     </span>
   );

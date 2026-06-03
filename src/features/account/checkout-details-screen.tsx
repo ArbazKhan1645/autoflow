@@ -8,9 +8,14 @@ import { Panel } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { calculateCartTotals, useCartStore } from "@/store/cart-store";
 import { useCustomerAuthStore } from "@/store/customer-auth-store";
-import { preciseCurrency } from "@/lib/utils";
+import {
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 
 export function CheckoutDetailsScreen() {
+  const { href } = useClient();
+  const { preciseCurrency } = useClientCurrency();
   const user = useCustomerAuthStore((state) => state.user);
   const items = useCartStore((state) => state.items);
   const totals = calculateCartTotals(items);
@@ -41,7 +46,7 @@ export function CheckoutDetailsScreen() {
               </Select>
               <Input placeholder="Order notes" />
             </div>
-            <Link className={buttonClassName({ variant: "primary", size: "lg", className: "mt-6" })} href="/account/payment">
+            <Link className={buttonClassName({ variant: "primary", size: "lg", className: "mt-6" })} href={href("/account/payment")}>
               Continue to payment
             </Link>
           </Panel>

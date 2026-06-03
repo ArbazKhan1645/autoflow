@@ -6,25 +6,19 @@ import { PublicPageShell } from "@/components/public/public-page-shell";
 import { Button } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
+import { useClientConfig } from "@/components/providers/client-config-provider";
 import { useNotificationStore } from "@/store/notification-store";
 
-const contactCards = [
-  { label: "Phone", value: "+1 214 555 0100", icon: Phone },
-  { label: "WhatsApp", value: "+1 214 555 0100", icon: MessageSquareText },
-  { label: "Email", value: "support@autoflow.example", icon: Mail },
-  {
-    label: "Warehouse",
-    value: "Orangi town sector 4, Karachi, Pakistan",
-    icon: MapPin,
-  },
-  {
-    label: "Dispatch",
-    value: "Retail, fleet and export shipping",
-    icon: Truck,
-  },
-];
-
 export function ContactScreen() {
+  const config = useClientConfig();
+  const { contact, social } = config;
+  const contactCards = [
+    { label: "Phone", value: contact.phone, icon: Phone },
+    { label: "WhatsApp", value: social.whatsapp || contact.phone, icon: MessageSquareText },
+    { label: "Email", value: contact.email, icon: Mail },
+    { label: "Warehouse", value: contact.address, icon: MapPin },
+    { label: "Dispatch", value: contact.supportLabel, icon: Truck },
+  ];
   const pushToast = useNotificationStore((state) => state.pushToast);
   const [form, setForm] = useState({
     name: "",

@@ -11,7 +11,8 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusPill } from "@/components/ui/status-pill";
 import { useCustomers } from "@/hooks/use-customers";
-import { currency, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { useClientCurrency } from "@/components/providers/client-config-provider";
 import type { CustomerStatus } from "@/models";
 import { useNotificationStore } from "@/store/notification-store";
 
@@ -25,6 +26,7 @@ const statuses: (CustomerStatus | "all")[] = [
 ];
 
 export function CrmScreen() {
+  const { currency } = useClientCurrency();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<CustomerStatus | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);

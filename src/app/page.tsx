@@ -1,5 +1,8 @@
-import { LandingPage } from "@/features/landing/landing-page";
+import { notFound } from "next/navigation";
 
-export default function Home() {
-  return <LandingPage />;
+// The bare root reveals nothing — every real storefront lives under a
+// client slug (/<client>/...). Hitting "/" renders the neutral 404 so
+// clients cannot tell that other clients exist.
+export default function RootIndex() {
+  notFound();
 }

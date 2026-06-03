@@ -1,8 +1,6 @@
+// Brand identity now lives per-client in src/lib/clients/*. APP_CONFIG keeps
+// only tenant-agnostic operational defaults used by the mock API/services.
 export const APP_CONFIG = {
-  name: "AutoFlow CRM",
-  shortName: "AutoFlow",
-  tagline: "Automotive parts operations, beautifully connected.",
-  supportEmail: "support@autoflow.example",
   mockApiLatency: 220,
   taxRate: 0.0825,
   defaultShipping: 48,

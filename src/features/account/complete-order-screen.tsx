@@ -7,8 +7,10 @@ import { Button, buttonClassName } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 import { useCartStore } from "@/store/cart-store";
 import { useNotificationStore } from "@/store/notification-store";
+import { useClient } from "@/components/providers/client-config-provider";
 
 export function CompleteOrderScreen() {
+  const { href } = useClient();
   const clear = useCartStore((state) => state.clear);
   const pushToast = useNotificationStore((state) => state.pushToast);
 
@@ -45,7 +47,7 @@ export function CompleteOrderScreen() {
                 size: "lg",
                 className: "w-full sm:w-56",
               })}
-              href="/"
+              href={href("/")}
               onClick={finish}
             >
               <Home className="h-5 w-5" />

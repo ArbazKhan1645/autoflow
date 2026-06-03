@@ -11,13 +11,15 @@ import { GlassCard } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useCustomerAuthStore } from "@/store/customer-auth-store";
 import { useNotificationStore } from "@/store/notification-store";
+import { useClient } from "@/components/providers/client-config-provider";
 
 export function AuthScreen() {
   const router = useRouter();
+  const { href } = useClient();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [fullName, setFullName] = useState("AutoFlow Customer");
+  const [fullName, setFullName] = useState("Customer");
   const [email, setEmail] = useState("customer@example.com");
-  const [password, setPassword] = useState("autoflow-demo");
+  const [password, setPassword] = useState("demo-password");
   const signIn = useCustomerAuthStore((state) => state.signIn);
   const signUp = useCustomerAuthStore((state) => state.signUp);
   const verify = useCustomerAuthStore((state) => state.verify);
@@ -31,7 +33,7 @@ export function AuthScreen() {
       message: "Welcome back. Your account cart is ready.",
       severity: "success",
     });
-    router.push("/account");
+    router.push(href("/account"));
   };
 
   const handleSignUp = () => {
@@ -50,7 +52,7 @@ export function AuthScreen() {
       message: "You can now checkout from My Account.",
       severity: "success",
     });
-    router.push("/account");
+    router.push(href("/account"));
   };
 
   return (
@@ -179,7 +181,7 @@ export function AuthScreen() {
                 variant: "ghost",
                 className: "mt-4 w-full",
               })}
-              href="/products"
+              href={href("/products")}
             >
               Continue shopping
             </Link>

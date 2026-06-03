@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Boxes, CheckCircle2, Globe2, ShieldCheck, ShoppingBag, Truck, Wrench } from "lucide-react";
 import { PublicPageShell } from "@/components/public/public-page-shell";
+import { useClient } from "@/components/providers/client-config-provider";
 import { buttonClassName } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 
@@ -51,6 +54,7 @@ const serviceSignals = [
 ];
 
 export function ServicesScreen() {
+  const { href } = useClient();
   return (
     <PublicPageShell>
       <section className="relative overflow-hidden bg-slate-950 py-20 text-white">
@@ -134,7 +138,7 @@ export function ServicesScreen() {
                 <h2 className="text-3xl font-black tracking-normal">Need help choosing?</h2>
                 <p className="mt-2 text-slate-300">Send vehicle details and our support team will recommend products.</p>
               </div>
-              <Link className={buttonClassName({ variant: "primary", size: "lg", className: "bg-white text-slate-950 hover:bg-blue-50" })} href="/contact">
+              <Link className={buttonClassName({ variant: "primary", size: "lg", className: "bg-white text-slate-950 hover:bg-blue-50" })} href={href("/contact")}>
                 Contact support
                 <ArrowRight className="h-5 w-5" />
               </Link>

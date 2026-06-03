@@ -13,8 +13,8 @@ import type { UserRole } from "@/models";
 const adminAccounts = [
   {
     id: "usr-001",
-    fullName: "Arbaz Khan",
-    email: "mashwanikhan192@gmail.com",
+    fullName: "Store Owner",
+    email: "owner@example.com",
     role: "owner" as UserRole,
     status: "active",
     lastLogin: "Today, 12:39 PM",
@@ -22,7 +22,7 @@ const adminAccounts = [
   {
     id: "usr-002",
     fullName: "Ava Chen",
-    email: "ava@autoflow.example",
+    email: "ava@example.com",
     role: "admin" as UserRole,
     status: "active",
     lastLogin: "Yesterday, 6:10 PM",
@@ -30,7 +30,7 @@ const adminAccounts = [
   {
     id: "usr-003",
     fullName: "Noah Patel",
-    email: "noah@autoflow.example",
+    email: "noah@example.com",
     role: "sales" as UserRole,
     status: "active",
     lastLogin: "May 19, 2026",
@@ -38,7 +38,7 @@ const adminAccounts = [
   {
     id: "usr-004",
     fullName: "Imani Clark",
-    email: "imani@autoflow.example",
+    email: "imani@example.com",
     role: "inventory" as UserRole,
     status: "invited",
     lastLogin: "Pending",

@@ -1,21 +1,22 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LogoMark } from "@/components/brand/logo-mark";
+import { useClient } from "@/components/providers/client-config-provider";
 import { useAuthStore } from "@/store/auth-store";
 
 export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  const { href, relativePath } = useClient();
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
-  const isCrmRoute = pathname.startsWith("/crm");
+  const isCrmRoute = relativePath.startsWith("/crm");
 
   useEffect(() => {
     if (!isCrmRoute || !hasHydrated) return;
-    if (!user) router.replace("/crm/auth");
-  }, [hasHydrated, isCrmRoute, router, user]);
+    if (!user) router.replace(href("/crm/auth"));
+  }, [hasHydrated, href, isCrmRoute, router, user]);
 
   if (!isCrmRoute) return <>{children}</>;
 

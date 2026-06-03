@@ -5,7 +5,7 @@ export const warehouses: Warehouse[] = [
     id: "wh-dal",
     name: "Dallas Main",
     region: "US South",
-    address: "Orangi town sector 4, Karachi, Pakistan",
+    address: "Distribution Center, Industrial Area",
     manager: "Harper Wells",
     capacityUsed: 78,
     inboundShipments: 12,

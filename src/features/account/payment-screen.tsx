@@ -1,11 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { CreditCard, LockKeyhole, ShieldCheck } from "lucide-react";
 import { PublicPageShell } from "@/components/public/public-page-shell";
+import { useClient } from "@/components/providers/client-config-provider";
 import { buttonClassName } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export function PaymentScreen() {
+  const { href } = useClient();
   return (
     <PublicPageShell>
       <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -23,9 +27,9 @@ export function PaymentScreen() {
                 <Input defaultValue="12 / 28" />
                 <Input defaultValue="123" />
               </div>
-              <Input defaultValue="AutoFlow Customer" />
+              <Input placeholder="Name on card" />
             </div>
-            <Link className={buttonClassName({ variant: "primary", size: "lg", className: "mt-6" })} href="/account/complete">
+            <Link className={buttonClassName({ variant: "primary", size: "lg", className: "mt-6" })} href={href("/account/complete")}>
               Complete order
             </Link>
           </Panel>

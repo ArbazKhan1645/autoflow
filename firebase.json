@@ -11,18 +11,6 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "redirects": [
-      {
-        "source": "/crm",
-        "destination": "/crm/auth",
-        "type": 302
-      },
-      {
-        "source": "/crm/",
-        "destination": "/crm/auth/",
-        "type": 302
-      }
-    ],
     "headers": [
       {
         "source": "/_next/static/**",

@@ -128,7 +128,7 @@ export const voiceAssistantSettings: VoiceAssistantSettings = {
   language: "English",
   timezone: "America/Chicago",
   greeting:
-    "Thanks for calling AutoFlow Parts. I can help check stock, compatibility, quotes and order status.",
+    "Thanks for calling our parts store. I can help check stock, compatibility, quotes and order status.",
   escalationPhone: "+1 214 555 0100",
   maxCallDurationMinutes: 12,
   autoFollowUpEnabled: true,

@@ -12,11 +12,17 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusPill } from "@/components/ui/status-pill";
 import { useProduct, useProducts } from "@/hooks/use-products";
-import { currency, formatDate, percentage } from "@/lib/utils";
+import { formatDate, percentage } from "@/lib/utils";
+import {
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 import { useCartStore } from "@/store/cart-store";
 import { useNotificationStore } from "@/store/notification-store";
 
 export function ProductDetailScreen({ slug }: { slug: string }) {
+  const { href } = useClient();
+  const { currency } = useClientCurrency();
   const productQuery = useProduct(slug);
   const product = productQuery.data;
   const recommendations = useProducts({
@@ -41,7 +47,7 @@ export function ProductDetailScreen({ slug }: { slug: string }) {
         title="Product not found"
         description="This SKU may be archived or missing from the current catalog."
         action={
-          <Link className={buttonClassName({ variant: "primary" })} href="/catalog">
+          <Link className={buttonClassName({ variant: "primary" })} href={href("/catalog")}>
             Back to catalog
           </Link>
         }
@@ -56,7 +62,7 @@ export function ProductDetailScreen({ slug }: { slug: string }) {
     <div className="mx-auto flex max-w-7xl flex-col gap-6">
       <Link
         className="inline-flex items-center gap-2 text-sm font-bold text-primary"
-        href="/catalog"
+        href={href("/catalog")}
       >
         <ArrowLeft className="h-4 w-4" />
         Back to catalog
@@ -142,7 +148,7 @@ export function ProductDetailScreen({ slug }: { slug: string }) {
                 size: "lg",
                 className: "flex-1",
               })}
-              href="/crm"
+              href={href("/crm")}
             >
               Create inquiry
             </Link>
@@ -234,7 +240,7 @@ export function ProductDetailScreen({ slug }: { slug: string }) {
             .map((item) => (
               <Link
                 className="rounded-lg border border-border-soft bg-white p-4 transition hover:border-primary/40 hover:bg-blue-50 dark:bg-white/5"
-                href={`/catalog/${item.slug}`}
+                href={href(`/catalog/${item.slug}`)}
                 key={item.id}
               >
                 <p className="text-sm font-black text-slate-950 dark:text-white">

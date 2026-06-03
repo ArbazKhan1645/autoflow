@@ -8,12 +8,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonClassName } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Panel } from "@/components/ui/card";
-import { storefrontProducts } from "@/data/storefront";
-import { currency } from "@/lib/utils";
+import {
+  useCatalog,
+  useClient,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 import { useCartStore } from "@/store/cart-store";
 import { useNotificationStore } from "@/store/notification-store";
 
 export function StorefrontProductDetail({ slug }: { slug: string }) {
+  const { href } = useClient();
+  const { currency } = useClientCurrency();
+  const { storefrontProducts } = useCatalog();
   const product = storefrontProducts.find((item) => item.slug === slug);
   const addStorefrontItem = useCartStore((state) => state.addStorefrontItem);
   const pushToast = useNotificationStore((state) => state.pushToast);
@@ -26,7 +32,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
             title="Product not found"
             description="This item may be unavailable. Browse the product page for current stock."
             action={
-              <Link className={buttonClassName({ variant: "primary" })} href="/products" prefetch={false}>
+              <Link className={buttonClassName({ variant: "primary" })} href={href("/products")} prefetch={false}>
                 Back to products
               </Link>
             }
@@ -44,7 +50,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
     <PublicPageShell>
       <section className="bg-white py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Link className="inline-flex items-center gap-2 text-sm font-black text-primary" href="/products" prefetch={false}>
+          <Link className="inline-flex items-center gap-2 text-sm font-black text-primary" href={href("/products")} prefetch={false}>
             <ArrowLeft className="h-4 w-4" />
             Back to products
           </Link>
@@ -132,7 +138,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
                   size: "lg",
                   className: "flex-1",
                 })}
-                href="/contact"
+                href={href("/contact")}
                 prefetch={false}
               >
                 Ask before buying
@@ -160,7 +166,7 @@ export function StorefrontProductDetail({ slug }: { slug: string }) {
             {related.map((item) => (
               <Link
                 className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                href={`/products/${item.slug}`}
+                href={href(`/products/${item.slug}`)}
                 key={item.id}
                 prefetch={false}
               >

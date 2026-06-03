@@ -22,50 +22,18 @@ import { Button, buttonClassName } from "@/components/ui/button";
 import { Panel } from "@/components/ui/card";
 import { Reveal } from "@/components/motion/reveal";
 import {
-  clientFeedback,
-  companyProjects,
-  megaMenu,
-  storefrontProducts,
-  storefrontVideos,
-} from "@/data/storefront";
-import { currency } from "@/lib/utils";
+  useCatalog,
+  useClient,
+  useClientConfig,
+  useClientCurrency,
+} from "@/components/providers/client-config-provider";
 import type { StorefrontProduct } from "@/data/storefront";
 import { useCartStore } from "@/store/cart-store";
 import { useNotificationStore } from "@/store/notification-store";
 
-const heroStats = [
-  ["12k+", "parts delivered"],
-  ["4.9/5", "customer rating"],
-  ["24h", "fast dispatch"],
-  ["35+", "export lanes"],
-];
-
-const whyChoose = [
-  {
-    title: "Fitment-first support",
-    description:
-      "We verify vehicle year, model, trim and usage before your order moves forward.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Premium stock curation",
-    description:
-      "Hot sellers, imported accessories and service parts are selected for real demand.",
-    icon: Crown,
-  },
-  {
-    title: "Fast dispatch workflow",
-    description:
-      "Stock, packing and shipping are handled through a structured operational flow.",
-    icon: Truck,
-  },
-  {
-    title: "Garage and fleet ready",
-    description:
-      "Bulk buyers get quote-ready items, repeat ordering and clean documentation.",
-    icon: Wrench,
-  },
-];
+// Icons stay presentational here; the text comes from the client config
+// (config.features), matched by position.
+const whyChooseIcons = [ShieldCheck, Crown, Truck, Wrench];
 
 const brandOffers = [
   "Luxury 7D and 9D mats",
@@ -79,12 +47,14 @@ const brandOffers = [
 ];
 
 function HotProductCard({ product }: { product: StorefrontProduct }) {
+  const { href } = useClient();
+  const { currency } = useClientCurrency();
   const addStorefrontItem = useCartStore((state) => state.addStorefrontItem);
   const pushToast = useNotificationStore((state) => state.pushToast);
 
   return (
     <Panel className="group overflow-hidden">
-      <Link href={`/products/${product.slug}`} prefetch={false}>
+      <Link href={href(`/products/${product.slug}`)} prefetch={false}>
         <div className="relative h-56 overflow-hidden bg-slate-100">
           <Image
             alt={product.name}
@@ -103,7 +73,7 @@ function HotProductCard({ product }: { product: StorefrontProduct }) {
         <p className="text-xs font-black uppercase tracking-[0.16em] text-primary">
           {product.subCategory} / {product.childCategory}
         </p>
-        <Link href={`/products/${product.slug}`} prefetch={false}>
+        <Link href={href(`/products/${product.slug}`)} prefetch={false}>
           <h3 className="mt-2 line-clamp-2 min-h-12 text-lg font-black text-slate-950 transition hover:text-primary">
             {product.name}
           </h3>
@@ -146,6 +116,16 @@ function HotProductCard({ product }: { product: StorefrontProduct }) {
 }
 
 export function LandingPage() {
+  const { href } = useClient();
+  const config = useClientConfig();
+  const { currency } = useClientCurrency();
+  const {
+    clientFeedback,
+    companyProjects,
+    megaMenu,
+    storefrontProducts,
+    storefrontVideos,
+  } = useCatalog();
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 700], [0, 120]);
   const hotProducts = storefrontProducts.filter((product) => product.hot).slice(0, 6);
@@ -167,7 +147,7 @@ export function LandingPage() {
                 Premium auto parts, accessories and fitment support
               </div>
               <h1 className="mt-6 text-balance text-5xl font-black tracking-normal sm:text-6xl lg:text-7xl">
-                Upgrade every drive with parts that actually fit.
+                {config.storeSlogan}
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-blue-50/86">
                 Shop luxury floor mats, interior accessories, lighting,
@@ -182,7 +162,7 @@ export function LandingPage() {
                     className:
                       "bg-white text-slate-950 shadow-white/20 hover:bg-blue-50",
                   })}
-                  href="/products"
+                  href={href("/products")}
                   prefetch={false}
                 >
                   Shop products
@@ -195,21 +175,21 @@ export function LandingPage() {
                     className:
                       "border-white/25 bg-white/10 text-white hover:bg-white/18",
                   })}
-                  href="/contact"
+                  href={href("/contact")}
                   prefetch={false}
                 >
                   Ask fitment expert
                 </Link>
               </div>
               <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {heroStats.map(([value, label]) => (
+                {config.stats.map((stat) => (
                   <div
                     className="rounded-lg border border-white/14 bg-white/10 p-4 backdrop-blur"
-                    key={label}
+                    key={stat.label}
                   >
-                    <p className="text-2xl font-black">{value}</p>
+                    <p className="text-2xl font-black">{stat.value}</p>
                     <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-blue-100/72">
-                      {label}
+                      {stat.label}
                     </p>
                   </div>
                 ))}
@@ -224,7 +204,7 @@ export function LandingPage() {
                   {hotProducts.slice(0, 4).map((product) => (
                     <Link
                       className="rounded-lg bg-white p-3 text-slate-950 shadow-xl transition hover:-translate-y-1"
-                      href={`/products/${product.slug}`}
+                      href={href(`/products/${product.slug}`)}
                       key={product.id}
                       prefetch={false}
                     >
@@ -264,7 +244,7 @@ export function LandingPage() {
                   Categories built for real car owners
                 </h2>
               </div>
-              <Link className="font-black text-primary" href="/products" prefetch={false}>
+              <Link className="font-black text-primary" href={href("/products")} prefetch={false}>
                 View all products
               </Link>
             </div>
@@ -284,7 +264,7 @@ export function LandingPage() {
                       group.products.slice(0, 2).map((item) => (
                         <Link
                           className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600 transition hover:bg-blue-50 hover:text-primary"
-                          href={item.href}
+                          href={href(item.href)}
                           key={`${category.label}-${item.label}`}
                           prefetch={false}
                         >
@@ -356,7 +336,7 @@ export function LandingPage() {
                   Fast-moving accessories customers keep buying
                 </h2>
               </div>
-              <Link className="font-black text-primary" href="/products?hot=true" prefetch={false}>
+              <Link className="font-black text-primary" href={href("/products?hot=true")} prefetch={false}>
                 Browse hot sellers
               </Link>
             </div>
@@ -434,19 +414,22 @@ export function LandingPage() {
             </div>
           </Reveal>
           <div className="grid gap-4 md:grid-cols-2">
-            {whyChoose.map((item, index) => (
-              <Reveal delay={index * 0.04} key={item.title}>
-                <Panel className="h-full p-5">
-                  <item.icon className="h-6 w-6 text-primary" />
-                  <h3 className="mt-5 text-xl font-black text-slate-950">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    {item.description}
-                  </p>
-                </Panel>
-              </Reveal>
-            ))}
+            {config.features.map((item, index) => {
+              const Icon = whyChooseIcons[index] ?? ShieldCheck;
+              return (
+                <Reveal delay={index * 0.04} key={item.title}>
+                  <Panel className="h-full p-5">
+                    <Icon className="h-6 w-6 text-primary" />
+                    <h3 className="mt-5 text-xl font-black text-slate-950">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">
+                      {item.description}
+                    </p>
+                  </Panel>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -535,7 +518,7 @@ export function LandingPage() {
                   size: "lg",
                   className: "bg-white text-slate-950 hover:bg-blue-50",
                 })}
-                href="/products"
+                href={href("/products")}
                 prefetch={false}
               >
                 Start shopping

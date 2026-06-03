@@ -3,17 +3,23 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { LogoMark } from "@/components/brand/logo-mark";
+import {
+  useClient,
+  useClientConfig,
+} from "@/components/providers/client-config-provider";
 import { useAuthStore } from "@/store/auth-store";
 
 export function AdminCrmEntry() {
   const router = useRouter();
+  const { href } = useClient();
+  const config = useClientConfig();
   const user = useAuthStore((state) => state.user);
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
 
   useEffect(() => {
     if (!hasHydrated) return;
-    router.replace(user ? "/crm/dashboard" : "/crm/auth");
-  }, [hasHydrated, router, user]);
+    router.replace(href(user ? "/crm/dashboard" : "/crm/auth"));
+  }, [hasHydrated, href, router, user]);
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#f6faff] text-slate-950 premium-grid">
@@ -21,7 +27,7 @@ export function AdminCrmEntry() {
         <LogoMark className="h-14 w-14" priority />
         <div>
           <p className="text-sm font-black uppercase tracking-[0.18em] text-primary">
-            AutoFlow CRM
+            {config.storeName} CRM
           </p>
           <p className="mt-2 text-sm font-semibold text-slate-600">
             Opening secure admin workspace...

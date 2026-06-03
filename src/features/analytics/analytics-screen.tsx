@@ -12,11 +12,12 @@ import { MetricCard } from "@/components/ui/metric-card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAnalyticsOverview } from "@/hooks/use-analytics";
-import { currency } from "@/lib/utils";
+import { useClientCurrency } from "@/components/providers/client-config-provider";
 
 const icons = [DollarSign, Users, BarChart3, Package];
 
 export function AnalyticsScreen() {
+  const { currency } = useClientCurrency();
   const analytics = useAnalyticsOverview();
 
   return (

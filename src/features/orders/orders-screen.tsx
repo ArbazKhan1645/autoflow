@@ -10,7 +10,8 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusPill } from "@/components/ui/status-pill";
 import { useOrders } from "@/hooks/use-orders";
-import { currency, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+import { useClientCurrency } from "@/components/providers/client-config-provider";
 import type { OrderStatus, PaymentStatus } from "@/models";
 
 const stages: OrderStatus[] = [
@@ -22,6 +23,7 @@ const stages: OrderStatus[] = [
 ];
 
 export function OrdersScreen() {
+  const { currency } = useClientCurrency();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<OrderStatus | "all">("all");
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus | "all">("all");
