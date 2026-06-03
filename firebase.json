@@ -2,7 +2,7 @@
   "hosting": {
     "public": "out",
     "predeploy": [
-      "npm run build"
+      "node scripts/predeploy.mjs"
     ],
     "cleanUrls": true,
     "trailingSlash": true,
